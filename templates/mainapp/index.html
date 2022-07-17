@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-5">Главная страница</h2>
+
+    <h3 class="mb-4">Последние посты</h3>
+
+    {% include 'mainapp/modules/posts.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% if posts %}
+    {% for el in posts %}
+        <div class="card m-3">
+                <div class="card-header">
+                    Пост
+                </div>
+                <div class="card-body">
+                <h5 class="card-title">{{ el.title }}</h5>
+                <p class="card-text">{{ el.text }}</p>
+                <hr>
+                <p>{{ el.updated_at }}</p>
+
+                {% if el.visible_all == True %}
+                    <p>Данное сообщение видно всем учатсникам платформы</p>
+                {% else %}
+                    <p>Класс: {{ el.visible_class }}</p>
+                {% endif %}
+                
+                <a href="{% url 'post_detail' postid=el.id %}" class="btn btn-primary mt-3">Подробнее</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    Нет постов.
+{% endif %}

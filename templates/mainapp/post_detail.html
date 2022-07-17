@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-3">Подробнее о посте</h2>
+
+    <div class="card m-3">
+        <div class="card-header">
+            Пост
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.text }}</p>
+            {% if post.img %}
+                <img src="{{ post.img.url }}" alt="{{ post.title }}" class="img-fluid">
+            {% endif %}
+            <hr>
+            <p>{{ post.updated_at }}</p>
+
+            {% if post.visible_all == True %}
+                <p>Данное сообщение видно всем учатсникам платформы</p>
+            {% else %}
+                <p>Класс: {{ post.visible_class }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
