@@ -46,7 +46,9 @@ def checkPostVisible(el, user):
     return False
 
 def index(request):
-    latest_posts = getAllPosts(request.user)[:3]
+    latest_posts = []
+    if request.user:
+        latest_posts = getAllPosts(request.user)[:3]
 
     context = {'title': 'Главная страница', 'posts': sort_posts(latest_posts)}
     return render(request, 'mainapp/index.html', context=context)

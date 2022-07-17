@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n1f%a-@^x6$1@pb6la07xxermf84+we8&tflh%ta06sx9ox*v)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['schoolsystem.na4u.ru']
 
 
 # Application definition
