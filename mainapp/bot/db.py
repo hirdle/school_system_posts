@@ -1,5 +1,5 @@
 import sqlite3
-conn = sqlite3.connect('C:/files/projects/school_project/app/mainapp/bot/users.db', check_same_thread=False)
+conn = sqlite3.connect('/home/c61097/schoolsystem.na4u.ru/app/mainapp/bot/users.db', check_same_thread=False)
 
 # userid, profileid, telegramid
 
