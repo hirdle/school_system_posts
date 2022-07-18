@@ -47,7 +47,7 @@ def checkPostVisible(el, user):
 
 def index(request):
     latest_posts = []
-    if request.user:
+    if request.user.is_authenticated:
         latest_posts = getAllPosts(request.user)[:3]
 
     context = {'title': 'Главная страница', 'posts': sort_posts(latest_posts)}
