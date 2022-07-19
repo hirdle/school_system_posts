@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n1f%a-@^x6$1@pb6la07xxermf84+we8&tflh%ta06sx9ox*v)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['schoolsystem.na4u.ru']
+ALLOWED_HOSTS = ['schoolsystem.na4u.ru', '127.0.0.1']
 
 
 # Application definition
@@ -152,3 +152,6 @@ MEDIA_ROOT = '/home/c61097/schoolsystem.na4u.ru/www/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+TIME_ZONE = 'Europe/Moscow'
+

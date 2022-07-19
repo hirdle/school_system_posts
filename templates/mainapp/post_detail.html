@@ -10,7 +10,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.text }}</p>
+            <p class="card-text">{{ post.text|linebreaks }}</p>
             {% if post.img %}
                 <img src="{{ post.img.url }}" alt="{{ post.title }}" class="img-fluid">
             {% endif %}
@@ -21,6 +21,10 @@
                 <p>Данное сообщение видно всем учатсникам платформы</p>
             {% else %}
                 <p>Класс: {{ post.visible_class }}</p>
+            {% endif %}
+
+            {% if user.is_superuser %}
+                    <a href="{% url 'post_delete' postid=post.id %}" class="btn btn-danger mt-3">Удалить</a>
             {% endif %}
         </div>
     </div>

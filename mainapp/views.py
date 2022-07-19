@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from .forms import PostCreateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,6 +6,25 @@ from .models import Post
 from users.models import Profile
 from .bot.notify import send_notify
 
+
+
+
+def getPostUsers(post):
+    users = []
+
+    if post.visible_all == False:
+        if post.visible_class.isnumeric():
+            for i in Profile.objects.filter(user_class_number=post.visible_class):
+                users.append(i.user.id)
+        else:
+            for i in Profile.objects.all():
+                if(i.user_class_number+i.user_class_letter == post.visible_class):
+                    users.append(i.user.id)
+    else:
+        for i in Profile.objects.all():
+            users.append(i.user.id)
+    
+    return users
 
 def getAllPosts(user):
     class_num = user.profile.user_class_number
@@ -48,7 +67,10 @@ def checkPostVisible(el, user):
 def index(request):
     latest_posts = []
     if request.user.is_authenticated:
-        latest_posts = getAllPosts(request.user)[:3]
+        if request.user.is_superuser:
+            latest_posts = Post.objects.all()
+        else:
+            latest_posts = getAllPosts(request.user)[:3]
 
     context = {'title': 'Главная страница', 'posts': sort_posts(latest_posts)}
     return render(request, 'mainapp/index.html', context=context)
@@ -74,6 +96,19 @@ def post_detail(request, postid):
         return redirect('posts')
 
 @login_required
+def post_delete(request, postid):
+    if request.user.is_superuser:
+        post = get_object_or_404(Post, id=postid)
+        post.delete()
+        messages.success(request, 'Пост успешно удален')
+        return redirect('posts_all')
+        # return redirect(request.META['HTTP_REFERER'])
+    else:
+        messages.error(request, 'У вас нет разрешений на удаление постов!')
+        return redirect('index')
+
+
+@login_required
 def posts(request):
 
     all_posts = getAllPosts(request.user)
@@ -89,7 +124,6 @@ def create_post(request):
 
             post_form = PostCreateForm(request.POST, request.FILES)
 
-            users = []
 
             if post_form.is_valid():
 
@@ -97,22 +131,16 @@ def create_post(request):
                 post.visible_class = post.visible_class.upper()
                 post.save()
 
-                if post.visible_all == False:
-                    if post.visible_class.isnumeric():
-                        for i in Profile.objects.filter(user_class_number=post.visible_class):
-                            users.append(i.user.id)
-                    else:
-                        for i in Profile.objects.all():
-                            if(i.user_class_number+i.user_class_letter == post.visible_class):
-                                users.append(i.user.id)
-                else:
-                    for i in Profile.objects.all():
-                        users.append(i.user.id)
+                users = getPostUsers(post)
 
                 send_notify(users, f"Новая новость!\nСсылка на неё: http://127.0.0.1:8000/post_detail/{post.id}/")
 
                 messages.success(request, 'Ваш пост был успешно создан!')
                 return redirect('index')
+            else:
+
+                context = {'post_form': post_form, 'title': 'Создать пост'}
+                return render(request, 'mainapp/create_post.html', context)
 
         else:
 

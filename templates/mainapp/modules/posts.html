@@ -6,7 +6,7 @@
                 </div>
                 <div class="card-body">
                 <h5 class="card-title">{{ el.title }}</h5>
-                <p class="card-text">{{ el.text }}</p>
+                <p class="card-text">{{ el.text| truncatewords:3 }}</p>
                 <hr>
                 <p>{{ el.updated_at }}</p>
 
@@ -17,6 +17,9 @@
                 {% endif %}
                 
                 <a href="{% url 'post_detail' postid=el.id %}" class="btn btn-primary mt-3">Подробнее</a>
+                {% if user.is_superuser %}
+                    <a href="{% url 'post_delete' postid=el.id %}" class="btn btn-danger mt-3">Удалить</a>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
